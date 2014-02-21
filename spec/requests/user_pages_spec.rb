@@ -33,7 +33,7 @@ describe "User Pages" do
         before { click_button submit }
 
         it { should have_title('Sign Up') }
-        it { should have_content('error') }
+        it { should have_error_message }
       end
     end
 
