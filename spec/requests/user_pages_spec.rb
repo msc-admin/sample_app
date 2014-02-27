@@ -60,6 +60,10 @@ describe "User Pages" do
     it { should have_content(user.name) }
     it { should have_title(user.name) }
 
+		it "should properly display microposts count" do
+			expect(page).to have_selector('div.span8 h3', text: "Microposts (#{user.microposts.count})")
+		end
+		
     describe "microposts" do
       it { should have_content(m1.content) }
       it { should have_content(m2.content) }

@@ -31,7 +31,31 @@ describe "Static pages" do
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
       end
+      
+      it "should properly display microposts count" do
+				expect(page).to have_selector('span', text: "micropost".pluralize(user.feed.count))
+			end
+			
+			
     end
+    
+    describe "microposts pagination" do
+			let(:user) { FactoryGirl.create(:user) }
+			before do
+				50.times { FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum") }
+        sign_in user
+        visit root_path
+      end
+			after  { user.microposts.delete_all }
+
+			it { should have_selector('div.pagination') }
+
+			it "should list each micropost" do
+				user.feed.paginate(page: 1).each do |item|
+					expect(page).to have_selector("li##{item.id}", text: item.content)
+				end
+			end
+		end
   end
 
   describe "Help page" do
